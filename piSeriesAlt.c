@@ -4,11 +4,13 @@
 int main(int argc, char const *argv[])
 {
 
-    long n = 10000000000; // Numero de terminos en la serie
+    long n = 1000000; // Numero de terminos en la serie
     double pi = 0.0;
-    int num_threads = 12; // Numero de hilos
+    int num_threads = 2; // Numero de hilos
 
     omp_set_num_threads(num_threads); // Setear el numero de hilos
+
+    double start_time = omp_get_wtime(); // Iniciar el cronometro
 
     #pragma omp parallel for reduction(+:pi) // Suma en paralelo
 
@@ -22,9 +24,12 @@ int main(int argc, char const *argv[])
         pi += term; // Sumar los terminos
     }
 
+    double end_time = omp_get_wtime(); // Detener el cronometro
+
     pi *= 4.0; // Multiplicar por 4
 
     printf("Valor aproximado de pi con %ld terminos y %d hilos = %.15f\n", n, num_threads, pi);
+    printf("Tiempo de ejecucion: %.15f segundos\n", end_time - start_time);
 
     return 0;
 }
