@@ -17,7 +17,9 @@ int main(int argc, char *argv[]) {
         thread_count = atoi(argv[2]);
     }
 
-    #pragma omp parallel for num_threads (thread_count) reduction(+:sum)
+    int block_size = 128;
+
+    #pragma omp parallel for num_threads (thread_count) reduction(+:sum) private(factor) schedule(auto)
     for (int i = 0; i < n; i++) {
         
         if (i % 2 == 0){
